@@ -30,7 +30,7 @@ img{
 }
 
 h1{
-	font-family: "jf-jinxuan";
+	font-family: jf-jinxuan;
 	font-weight: 300;
 	font-size: 1.4rem;
 }
@@ -44,7 +44,7 @@ h1{
 }
 
 .page .container_design h2.info_title{
-	font-family: "jinxuan";
+	font-family: jf-jinxuan;
 	font-size: 1.458rem;
 	line-height: 1.25;
 	letter-spacing: 0.2em;
@@ -62,7 +62,7 @@ h2{
 
 
 .index .section_design h3{
-	font-family: "jf-jinxuan";
+	font-family: jf-jinxuan;
 	font-size: 1.458rem;
 	line-height: 1.25;
 	letter-spacing: 0.2em;
