@@ -135,8 +135,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="js/mold.js"></script>
     <script type="module">
-        import { createApp, ref, computed, watch } from 'https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.esm-browser.prod.js';
         import { useFetchData } from './js/useFetchData.js';
+        import { createApp, ref, computed, watch, onMounted, nextTick } from 'https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.esm-browser.prod.js';
 
         createApp({
         setup() {
@@ -144,7 +144,8 @@
             categories,
             currentCategory,
             projects,
-            path
+            path,
+            fetchData
             } = useFetchData();
 
             const currentPage = ref(1);
@@ -206,6 +207,14 @@
                 selectedYear.value = ''; // ✅ ⬅️ 預設回到 ALL
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             };
+
+            onMounted(async () => {
+            await fetchData();       // 這是你抓資料的邏輯
+            await nextTick();        // 等 Vue DOM 更新
+            if (window.justfont && typeof window.justfont.load === 'function') {
+                window.justfont.load(); // 套用 justfont 字體
+            }
+            });
 
             return {
                 categories,
