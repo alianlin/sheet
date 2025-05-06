@@ -13,7 +13,6 @@ export function useFetchData() {
   const apiKey = 'AIzaSyB4qtRfCPfBRvf8l5mzJX1LZgmfzePn_-U';
   const sheetId = '1l38WlHpWKWjQ0mBtoCwhIUqVxqX6siaF_SlIZdo4V6k';
 
-  // 1. 取得所有工作表（sheet）的名稱
   const fetchSheetNames = async () => {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?key=${apiKey}`;
     try {
@@ -22,15 +21,14 @@ export function useFetchData() {
       const sheetNames = data.sheets.map((s) => s.properties.title);
 
       categories.value = sheetNames;
-      currentCategory.value = sheetNames[0] || ''; // 預設選第一個
+      currentCategory.value = sheetNames[0] || '';
     } catch (err) {
       console.error('🚨 無法取得工作表清單:', err);
     }
   };
 
-  // 2. 抓目前選中 sheet 的內容
   const fetchSheetData = async (sheetName) => {
-    const range = `'${sheetName}'!A1:Z`; // 有空格時需加單引號
+    const range = `'${sheetName}'!A1:Z`;
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${range}?key=${apiKey}`;
 
     try {
@@ -78,14 +76,19 @@ export function useFetchData() {
     }
   };
 
-  onMounted(async () => {
-    await fetchSheetNames(); // 抓工作表清單
-    await fetchSheetData(currentCategory.value); // 抓預設第一張資料
-  });
+  // ✅ 封裝初次載入
+  const fetchData = async () => {
+    await fetchSheetNames();
+    if (currentCategory.value) {
+      await fetchSheetData(currentCategory.value);
+    }
+  };
+
+  onMounted(fetchData);
 
   watch(currentCategory, async (newSheet) => {
     console.log('🔁 currentCategory 切換為：', newSheet);
-    await fetchSheetData(newSheet); // 每次切 tab 時抓該工作表
+    await fetchSheetData(newSheet);
   });
 
   return {
@@ -93,5 +96,6 @@ export function useFetchData() {
     currentCategory,
     projects,
     path,
+    fetchData, // ✅ 傳出去給外面用！
   };
 }
