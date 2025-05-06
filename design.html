@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-WGWNDDQ');</script>
+    <!-- End Google Tag Manager -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, shrink-to-fit=no">
+    <title>ALian | Portfolio - APP</title>
+    <meta name="keywords" content="Portfolio,ALian Lin,ALian,A-Lian,林阿蓮,阿蓮,UI,Designer,Web Designer" />
+    <meta name="description" content="ALian Lin is a UI Designer,with 10 years of experience in design, digital, and marketing." />
+    <meta property="og:title" content="ALian Lin | Portfolio" />
+    <meta property="og:description" content="ALian Lin is a UI Designer,with 10 years of experience in design, digital, and marketing." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://alian-design.com" />
+    <meta property="og:image" content="https://alian-design.com/images/share.jpg" />
+    <meta property="og:image:url" content="https://alian-design.com/images/share.jpg" />
+    <link rel="icon" href="https://alian-design.com/ALian/images/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="css/grid.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js"></script>
+    <script src="//s3-ap-northeast-1.amazonaws.com/justfont-user-script/jf-64282.js"></script>
+</head>
+<body class="page" id="design">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WGWNDDQ"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header class="header" id="header">
+    </header>
+    <div class="section_kv kv_page  kv_design">
+       <div class="container">
+            <h1 class="title">
+                <p>Design</p>
+            </h1>
+       </div>
+        <div class="kv_bg">
+            <div class="bg_circle"></div>
+            <div class="bg_circle"></div>
+            <div class="bg_circle"></div>
+            <div class="bg_circle"></div>
+            <div class="bg_circle"></div>
+            <div class="bg_circle"></div>
+            <div class="bg_circle"></div>
+            <div class="bg_lin" ></div>
+            <div class="bg_lin" ></div>
+            <div class="bg_lin"></div>
+        </div>
+    </div>
+    <section class="section_page design_page">
+        <div class="container container_tab">
+            <div class="row">
+              <a v-for="tab in categories"
+                :key="tab"
+                href="javascript:void(0);"
+                :class="['btn_tab', { 'is-active': currentCategory === tab }]"
+                @click="changeTab(tab)">
+                <span>{{ tab }}</span>
+                </a>
+            </div>
+        </div>
+        <div class="container container_design">
+            <!-- 搜尋 -->
+            <div class="search_area">
+                <select class="label_input label_select label_year" v-model="selectedYear">
+                    <option value="">選擇年份</option> <!-- 預設選項，value 為空字串 -->
+                    <option v-for="year in availableYears" :key="year" :value="year">
+                    {{ year }}
+                    </option>
+                </select>
+                <span class="line"></span>
+                <input class="label_input"
+                    type="text"
+                    v-model="searchInput"
+                    @keyup.enter="doSearch"
+                    placeholder="" >
+                <button class="label_btn btn" @click="doSearch">Search</button>
+            </div>
+            <div class="row row_content" v-for="item in pagedProjects" :key="item.id">
+                <div class="col-12 col-md-55">
+                    <div class="item item_pic" data-aos="fade">
+                        <img :src="`images/${path}/pic_${item.id}.jpg`" :alt="item.title" />
+                    </div>
+                </div>
+                <div class="col-12 col-md-55" >
+                    <div class="item item_info" data-aos="fade-up">
+                        <h2 class="info_title" v-if="item.title.length">
+                            <p>{{ item.title }}</p>
+                        </h2>
+                        <div class="info_tag" v-if="item.year.length">
+                            <span v-if="item.category.length" class="tag">{{ item.category }}</span>
+                            <span v-if="item.client.length" class="tag">{{ item.client }}</span>
+                            <span v-if="item.year.length" class="tag">{{ item.year }}</span>
+                        </div>
+                        <h5 class="info_content">
+                            <p v-html="item.description">{{ item.description }}</p>
+                            <p v-if="item.responsibilities.length">
+                                負責項目：{{ item.responsibilities.join('、') }}
+                            </p>
+                        </h5>
+                        <div class="info_more">
+                            <a v-if="item.link" :href="item.link" class="btn_more info_more" target="_blank" rel="noopener">
+                                <span class="text">more</span>
+                                <span class="circle">
+                                    <img class="arrow" src="images/btn_arrow_s.svg" alt="scroll down">
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pagination" v-if="totalPages > 1">
+                <button @click="currentPage--" :disabled="currentPage === 1">上一頁</button>
+                 <span>{{ currentPage }} / {{ totalPages }}</span>
+                 <button @click="currentPage++" :disabled="currentPage === totalPages">下一頁</button>
+            </div>
+        </div>
+    </section>
+    <div id="footer"></div>
+    <a class="btn_more btn_top" href="javascript:void(0);" data-aos="kv-fadeOut" data-aos-anchor=".kv_scroll-fadeOut">
+        <span class="text">TOP</span>
+        <span class="circle">
+            <img class="arrow" src="images/btn_arrow_sw.svg" alt="top">
+        </span>
+    </a>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script src="js/mold.js"></script>
+    <script type="module">
+        import { createApp, ref, computed, watch } from 'https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.esm-browser.prod.js';
+        import { useFetchData } from './js/useFetchData.js';
+
+        createApp({
+        setup() {
+            const {
+            categories,
+            currentCategory,
+            projects,
+            path
+            } = useFetchData();
+
+            const currentPage = ref(1);
+            const itemsPerPage = 6;
+
+            // 新增搜尋關鍵字狀態
+            const searchInput = ref('');     // 使用者輸入內容
+            const searchKeyword = ref('');   // 點擊搜尋按鈕後才會生效
+
+            // 搜尋過濾
+            const filteredProjects = computed(() => {
+            const keyword = searchKeyword.value.toLowerCase();
+
+            return projects.value.filter((item) => {
+                const matchKeyword =
+                !searchKeyword.value ||
+                item.title.toLowerCase().includes(keyword) ||
+                item.description.toLowerCase().includes(keyword) ||
+                item.client.toLowerCase().includes(keyword);
+
+                const matchYear =
+                !selectedYear.value || item.year === selectedYear.value;
+
+                return matchKeyword && matchYear;
+            });
+            });
+
+            // 一律用字串
+            const selectedYear = ref('');
+            const availableYears = computed(() => {
+            const years = projects.value
+                .map((p) => String(p.year).trim())
+                .filter(Boolean);
+            return [...new Set(years)].sort().reverse();
+            });
+            
+
+            const doSearch = () => {
+                searchKeyword.value = searchInput.value;
+                currentPage.value = 1;
+            };
+
+            // 分頁處理（針對搜尋後的資料）
+            const pagedProjects = computed(() => {
+            const start = (currentPage.value - 1) * itemsPerPage;
+                return filteredProjects.value.slice(start, start + itemsPerPage);
+            });
+
+            const totalPages = computed(() => {
+                return Math.ceil(filteredProjects.value.length / itemsPerPage);
+            });
+
+            // 切 tab 時回第一頁
+            const changeTab = (tab) => {
+                currentCategory.value = tab;
+                currentPage.value = 1;
+                searchInput.value = '';
+                searchKeyword.value = '';
+                selectedYear.value = ''; // ✅ ⬅️ 預設回到 ALL
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            return {
+                categories,
+                currentCategory,
+                projects,
+                path,
+                currentPage,
+                totalPages,
+                pagedProjects,
+                changeTab,
+                searchInput,
+                availableYears,
+                selectedYear,
+                doSearch,
+            };
+        }
+        }).mount('#design');
+    </script>
+</body>
+
+</html>
