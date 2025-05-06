@@ -9,7 +9,7 @@
 }
 
 html,body{
-	font-family: "sourcehansans-tc","Microsoft JhengHei";
+	font-family: "sourcehansans-tc","Microsoft JhengHei","jf-jinxuan";
 	font-weight: 400;
 	font-size: 3.3vw;
 	color: var(--text_color);
