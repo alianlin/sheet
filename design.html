@@ -92,7 +92,7 @@
                 <div class="col-12 col-md-55" >
                     <div class="item item_info" data-aos="fade-up">
                         <h2 class="info_title" v-if="item.title.length">
-                            {{ item.title }}
+                            <p>{{ item.title }}</p>
                         </h2>
                         <div class="info_tag" v-if="item.year.length">
                             <span v-if="item.category.length" class="tag">{{ item.category }}</span>
@@ -135,8 +135,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="js/mold.js"></script>
     <script type="module">
-        import { useFetchData } from './js/useFetchData.js';
         import { createApp, ref, computed, watch, onMounted, nextTick } from 'https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.esm-browser.prod.js';
+        import { useFetchData } from './js/useFetchData.js';
 
         createApp({
         setup() {
@@ -150,12 +150,10 @@
 
             const currentPage = ref(1);
             const itemsPerPage = 6;
+            const searchInput = ref('');
+            const searchKeyword = ref('');
+            const selectedYear = ref('');
 
-            // 新增搜尋關鍵字狀態
-            const searchInput = ref('');     // 使用者輸入內容
-            const searchKeyword = ref('');   // 點擊搜尋按鈕後才會生效
-
-            // 搜尋過濾
             const filteredProjects = computed(() => {
             const keyword = searchKeyword.value.toLowerCase();
 
@@ -173,66 +171,82 @@
             });
             });
 
-            // 一律用字串
-            const selectedYear = ref('');
             const availableYears = computed(() => {
             const years = projects.value
                 .map((p) => String(p.year).trim())
                 .filter(Boolean);
             return [...new Set(years)].sort().reverse();
             });
-            
 
             const doSearch = () => {
-                searchKeyword.value = searchInput.value;
-                currentPage.value = 1;
+            searchKeyword.value = searchInput.value;
+            currentPage.value = 1;
             };
 
-            // 分頁處理（針對搜尋後的資料）
             const pagedProjects = computed(() => {
             const start = (currentPage.value - 1) * itemsPerPage;
-                return filteredProjects.value.slice(start, start + itemsPerPage);
+            return filteredProjects.value.slice(start, start + itemsPerPage);
             });
 
             const totalPages = computed(() => {
-                return Math.ceil(filteredProjects.value.length / itemsPerPage);
+            return Math.ceil(filteredProjects.value.length / itemsPerPage);
             });
 
-            // 切 tab 時回第一頁
             const changeTab = (tab) => {
-                currentCategory.value = tab;
-                currentPage.value = 1;
-                searchInput.value = '';
-                searchKeyword.value = '';
-                selectedYear.value = ''; // ✅ ⬅️ 預設回到 ALL
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+            currentCategory.value = tab;
+            currentPage.value = 1;
+            searchInput.value = '';
+            searchKeyword.value = '';
+            selectedYear.value = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
             };
 
+            // 加入 justfont 字體載入監聽與套用
             onMounted(async () => {
-            await fetchData();       // 這是你抓資料的邏輯
-            await nextTick();        // 等 Vue DOM 更新
-            if (window.justfont && typeof window.justfont.load === 'function') {
-                window.justfont.load(); // 套用 justfont 字體
-            }
+            await fetchData();
+            await nextTick();
+
+            setTimeout(() => {
+                if (typeof _jf !== 'undefined' && typeof _jf.flush === 'function') {
+                console.log('🔁 呼叫 _jf.flush() 套用 justfont 字體');
+                _jf.flush();
+                } else if (window.justfont?.load instanceof Function) {
+                console.log('🔁 備用呼叫 justfont.load()');
+                window.justfont.load();
+                } else {
+                console.warn('⚠️ justfont 無法套用，_jf / justfont 未正確載入');
+                }
+            }, 300);
             });
 
+            // justfont 套字體成功/失敗監聽
+            if (typeof _jf !== 'undefined' && Array.isArray(_jf)) {
+            _jf.push(['_eventActived', () => {
+                console.log('✅ justfont 字體已成功套用');
+            }]);
+
+            _jf.push(['_eventInactived', () => {
+                console.warn('❌ justfont 字體套用失敗');
+            }]);
+            }
+
             return {
-                categories,
-                currentCategory,
-                projects,
-                path,
-                currentPage,
-                totalPages,
-                pagedProjects,
-                changeTab,
-                searchInput,
-                availableYears,
-                selectedYear,
-                doSearch,
+            categories,
+            currentCategory,
+            projects,
+            path,
+            currentPage,
+            totalPages,
+            pagedProjects,
+            changeTab,
+            searchInput,
+            availableYears,
+            selectedYear,
+            doSearch,
             };
         }
         }).mount('#design');
-    </script>
+</script>
 </body>
 
 </html>
