@@ -30,7 +30,7 @@ img{
 }
 
 h1{
-	font-family: jf-datc5;
+	font-family: "jf-jinxuan";
 	font-weight: 300;
 	font-size: 1.4rem;
 }
@@ -44,7 +44,7 @@ h1{
 }
 
 .page .container_design h2.info_title{
-	font-family: "jf-jinxuan";
+	font-family: "jinxuan";
 	font-size: 1.458rem;
 	line-height: 1.25;
 	letter-spacing: 0.2em;
@@ -62,7 +62,7 @@ h2{
 
 
 .index .section_design h3{
-	font-family: jf-jinxuan;
+	font-family: "jf-jinxuan";
 	font-size: 1.458rem;
 	line-height: 1.25;
 	letter-spacing: 0.2em;
@@ -78,7 +78,7 @@ h3{
 }
 
 h4{
-	font-family: jf-jinxuan;
+	font-family: "jf-jinxuan";
 	font-size: 1.458rem;
 	line-height: 1.25;
 	letter-spacing: 0.2em;
@@ -87,7 +87,7 @@ h4{
 
 
 h5{
-	font-family: jf-jinxuan;
+	font-family: "jf-jinxuan";
 	font-size: 1.08rem;
 	line-height: 1.6;
 	font-weight: 400;
@@ -225,7 +225,7 @@ a.btn_header.is-active::after,
 
 
 a.btn_more{
-	font-family: jf-jinxuan;
+	font-family: "jf-jinxuan";
 	display: inline-flex;
 	align-items: center;
 	font-weight: 500;
@@ -235,7 +235,7 @@ a.btn_more .text{
 	display: block;
 	color: var(--primary_color);
 	text-transform: uppercase;
-	font-family: jf-jinxuan;
+	font-family: "jf-jinxuan";
 }
 
 a.btn_more .circle{
@@ -444,7 +444,7 @@ a.btn_top .text{
 	text-align: center;
 	color: #aaa;
 	font-size: 0.9rem;
-	font-family: jf-jinxuan;
+	font-family: "jf-jinxuan";
 }
 
 #loading .loading_text p::after{
@@ -1416,7 +1416,7 @@ section.section_page{
 }
 
 .section_page.about_page .personal_info h2.main_title{
-	font-family: jf-jinxuan;
+	font-family: "jf-jinxuan";
 	line-height: 1.5;
 	font-size: 1.55rem;
 	letter-spacing: 0.05em;
