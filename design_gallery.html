@@ -93,53 +93,35 @@
                     </svg>
                 </button>
             </div>
-            <!-- 全圖片顯示 -->
-            <div class="info_area info_gallery">
-                <div class="row row_content">
-                    <div class="item item_pic" data-aos="fade" v-for="item in pagedProjects" :key="item.id" @click="openModal(item)">
-                        <figure>
-                            <img :src="`images/${path}/pic_${item.id}.jpg`" :alt="item.title" />
-                            <figcaption>
-                                <h2 class="info_title" v-if="item.title.length">
-                                    <p>{{ item.title }}</p>
-                                </h2>
-                            </figcaption>
-                        </figure>
+            <div class="row row_content" v-for="item in pagedProjects" :key="item.id">
+                <div class="col-12 col-md-55">
+                    <div class="item item_pic" data-aos="fade">
+                        <img :src="`images/${path}/pic_${item.id}.jpg`" :alt="item.title" />
                     </div>
                 </div>
-            </div>
-            <!-- 圖文顯示 -->
-            <div class="info_area info_project">
-                <div class="row row_content" v-for="item in pagedProjects" :key="item.id">
-                    <div class="col-12 col-md-55">
-                        <div class="item item_pic" data-aos="fade">
-                            <img :src="`images/${path}/pic_${item.id}.jpg`" :alt="item.title" />
+                <div class="col-12 col-md-55" >
+                    <div class="item item_info" data-aos="fade-up">
+                        <h2 class="info_title" v-if="item.title.length">
+                            <p>{{ item.title }}</p>
+                        </h2>
+                        <div class="info_tag" v-if="item.year.length">
+                            <span v-if="item.category.length" class="tag">{{ item.category }}</span>
+                            <span v-if="item.client.length" class="tag">{{ item.client }}</span>
+                            <span v-if="item.year.length" class="tag">{{ item.year }}</span>
                         </div>
-                    </div>
-                    <div class="col-12 col-md-55" >
-                        <div class="item item_info" data-aos="fade-up">
-                            <h2 class="info_title" v-if="item.title.length">
-                                <p>{{ item.title }}</p>
-                            </h2>
-                            <div class="info_tag" v-if="item.year.length">
-                                <span v-if="item.category.length" class="tag">{{ item.category }}</span>
-                                <span v-if="item.client.length" class="tag">{{ item.client }}</span>
-                                <span v-if="item.year.length" class="tag">{{ item.year }}</span>
-                            </div>
-                            <h5 class="info_content">
-                                <p v-html="item.description">{{ item.description }}</p>
-                                <p v-if="item.responsibilities.length">
-                                    負責項目：{{ item.responsibilities.join('、') }}
-                                </p>
-                            </h5>
-                            <div class="info_more">
-                                <a v-if="item.link" :href="item.link" class="btn_more info_more" target="_blank" rel="noopener">
-                                    <span class="text">more</span>
-                                    <span class="circle">
-                                        <img class="arrow" src="images/btn_arrow_s.svg" alt="scroll down">
-                                    </span>
-                                </a>
-                            </div>
+                        <h5 class="info_content">
+                            <p v-html="item.description">{{ item.description }}</p>
+                            <p v-if="item.responsibilities.length">
+                                負責項目：{{ item.responsibilities.join('、') }}
+                            </p>
+                        </h5>
+                        <div class="info_more">
+                            <a v-if="item.link" :href="item.link" class="btn_more info_more" target="_blank" rel="noopener">
+                                <span class="text">more</span>
+                                <span class="circle">
+                                    <img class="arrow" src="images/btn_arrow_s.svg" alt="scroll down">
+                                </span>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -166,40 +148,6 @@
             <img class="arrow" src="images/btn_arrow_sw.svg" alt="top">
         </span>
     </a>
-    <!-- Modal 外層 -->
-    <div class="modal_page modal-overlay" v-if="showModal && modalItem" @click.self="closeModal">
-        <div class="modal">
-            <div class="container-fluit container_design">
-                <button class="modal-close" @click="closeModal">×</button>
-
-                <!-- ✅ 在這裡包住整段內容 -->
-                <div class="item item_info"  v-for="item in [modalItem]" :key="item.id">
-                    <h2 class="info_title" v-if="item.title.length">
-                        <p>{{ item.title }}</p>
-                    </h2>
-                    <div class="info_tag" v-if="item.year.length">
-                        <span v-if="item.category.length" class="tag">{{ item.category }}</span>
-                        <span v-if="item.client.length" class="tag">{{ item.client }}</span>
-                        <span v-if="item.year.length" class="tag">{{ item.year }}</span>
-                    </div>
-                    <h5 class="info_content">
-                        <p v-html="item.description">{{ item.description }}</p>
-                        <p v-if="item.responsibilities.length">
-                            負責項目：{{ item.responsibilities.join('、') }}
-                        </p>
-                    </h5>
-                    <div class="info_more">
-                        <a v-if="item.link" :href="item.link" class="btn_more info_more" target="_blank" rel="noopener">
-                            <span class="text">more</span>
-                            <span class="circle">
-                                <img class="arrow" src="images/btn_arrow_s.svg" alt="scroll down">
-                            </span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
@@ -248,18 +196,6 @@ createApp({
       selectedYear.value = '';
       window.scrollTo({ top: 0, behavior: 'smooth' });
       window.location.hash = `#${tab}`;
-    };
-
-    //modal
-    const showModal = ref(false);        // 控制是否顯示 modal
-    const modalItem = ref(null);         // 儲存點擊的項目資料
-    const openModal = (item) => {
-    modalItem.value = item;
-    showModal.value = true;
-    };
-    const closeModal = () => {
-    showModal.value = false;
-    modalItem.value = null;
     };
 
     // ✅ 監聽網址 hash，確保 tab 狀態一致
@@ -311,10 +247,6 @@ createApp({
       availableYears,
       selectedYear,
       doSearch,
-      showModal,
-      modalItem,
-      openModal,
-      closeModal,
     };
   }
 }).mount('#design');
