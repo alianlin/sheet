@@ -1,4 +1,4 @@
-// ✅ useFetchData.js with cache and loading indicator support
+// ✅ useFetchData.js with cache and image URL fix
 import { ref, onMounted, watch } from 'https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.esm-browser.prod.js';
 
 export function useFetchData() {
@@ -6,11 +6,11 @@ export function useFetchData() {
   const currentCategory = ref('');
   const projects = ref([]);
   const path = ref('');
-  const isTabLoading = ref(false); // ✅ 用來顯示 tab 切換時的 loading 狀態
+  const isTabLoading = ref(false);
 
   const apiKey = 'AIzaSyB4qtRfCPfBRvf8l5mzJX1LZgmfzePn_-U';
   const sheetId = '1l38WlHpWKWjQ0mBtoCwhIUqVxqX6siaF_SlIZdo4V6k';
-  const cache = new Map(); // ✅ 快取所有 tab 資料
+  const cache = new Map();
 
   const fetchSheetNames = async () => {
     const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}?key=${apiKey}`;
@@ -29,6 +29,11 @@ export function useFetchData() {
     } catch (err) {
       console.error('🚨 無法取得工作表清單:', err);
     }
+  };
+
+  const convertGoogleDriveUrl = (url) => {
+    const match = url.match(/https:\/\/drive\.google\.com\/file\/d\/([^/]+)\/view.*/);
+    return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
   };
 
   const fetchSheetData = async (sheetName) => {
@@ -59,13 +64,20 @@ export function useFetchData() {
         headers.forEach((key, i) => {
           obj[key] = row[i]?.trim() || '';
         });
+
         obj.responsibilities = obj.responsibilities
           ? obj.responsibilities.split('、').filter((r) => r.trim() !== '')
           : [];
+
+        // ✅ 修正 Google Drive 圖片連結
+        if (obj.imageUrl?.includes('drive.google.com')) {
+          obj.imageUrl = convertGoogleDriveUrl(obj.imageUrl);
+        }
+
         return obj;
       });
 
-      cache.set(sheetName, parsed); // ✅ 存入快取
+      cache.set(sheetName, parsed);
       projects.value = parsed;
       const found = parsed.find((p) => p.path);
       path.value = found?.path || '';
@@ -91,6 +103,6 @@ export function useFetchData() {
     projects,
     path,
     fetchData: fetchSheetNames,
-    isTabLoading // ✅ 回傳給外部使用
+    isTabLoading
   };
 }

@@ -98,7 +98,7 @@
                 <div class="row row_content">
                     <div class="item item_pic" data-aos="fade" v-for="item in pagedProjects" :key="item.id" @click="openModal(item)">
                         <figure>
-                            <img :src="`images/${path}/pic_${item.id}.jpg`" :alt="item.title" />
+                            <img :src="item.imageUrl" :alt="item.title" />
                             <figcaption>
                                 <h2 class="info_title" v-if="item.title.length">
                                     <p>{{ item.title }}</p>
@@ -260,6 +260,11 @@ createApp({
     const closeModal = () => {
     showModal.value = false;
     modalItem.value = null;
+    };
+
+    const convertGoogleDriveUrl = (url) => {
+    const match = url.match(/https:\/\/drive\.google\.com\/file\/d\/([^/]+)\/view.*/);
+    return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
     };
 
     // ✅ 監聽網址 hash，確保 tab 狀態一致
