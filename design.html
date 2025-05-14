@@ -262,11 +262,6 @@ createApp({
     modalItem.value = null;
     };
 
-    const convertGoogleDriveUrl = (url) => {
-    const match = url.match(/https:\/\/drive\.google\.com\/file\/d\/([^/]+)\/view.*/);
-    return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
-    };
-
     // ✅ 監聽網址 hash，確保 tab 狀態一致
     window.addEventListener('hashchange', () => {
       const hash = decodeURIComponent(window.location.hash.replace('#', '')).toLowerCase();

@@ -69,11 +69,6 @@ export function useFetchData() {
           ? obj.responsibilities.split('、').filter((r) => r.trim() !== '')
           : [];
 
-        // ✅ 修正 Google Drive 圖片連結
-        if (obj.imageUrl?.includes('drive.google.com')) {
-          obj.imageUrl = convertGoogleDriveUrl(obj.imageUrl);
-        }
-
         return obj;
       });
 
