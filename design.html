@@ -93,21 +93,6 @@
                     </svg>
                 </button>
             </div>
-            <!-- 全圖片顯示 -->
-            <div class="info_area info_gallery">
-                <div class="row row_content">
-                    <div class="item item_pic" data-aos="fade" v-for="item in pagedProjects" :key="item.id" @click="openModal(item)">
-                        <figure>
-                            <img :src="item.imageUrl" :alt="item.title" />
-                            <figcaption>
-                                <h2 class="info_title" v-if="item.title.length">
-                                    <p>{{ item.title }}</p>
-                                </h2>
-                            </figcaption>
-                        </figure>
-                    </div>
-                </div>
-            </div>
             <!-- 圖文顯示 -->
             <div class="info_area info_project">
                 <div class="row row_content" v-for="item in pagedProjects" :key="item.id">
@@ -261,6 +246,7 @@ createApp({
     showModal.value = false;
     modalItem.value = null;
     };
+
 
     // ✅ 監聽網址 hash，確保 tab 狀態一致
     window.addEventListener('hashchange', () => {
