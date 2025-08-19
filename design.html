@@ -156,120 +156,120 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
     <script src="js/mold.js"></script>
     <script type="module">
-import {
-  createApp,
-  ref,
-  onMounted,
-  watch,
-  nextTick
-} from 'https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.esm-browser.prod.js';
+        import {
+        createApp,
+        ref,
+        onMounted,
+        watch,
+        nextTick
+        } from 'https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.esm-browser.prod.js';
 
-import { useFetchData } from './js/useFetchData.js';
-import { usePagination } from './js/usePagination.js';
-import { initJustfont } from './js/useJustfont.js';
+        import { useFetchData } from './js/useFetchData.js';
+        import { usePagination } from './js/usePagination.js';
+        import { initJustfont } from './js/useJustfont.js';
 
-createApp({
-  setup() {
-    const isLoading = ref(true);
+        createApp({
+        setup() {
+            const isLoading = ref(true);
 
-    const {
-      categories,
-      currentCategory,
-      projects,
-      path,
-      fetchData
-    } = useFetchData();
+            const {
+            categories,
+            currentCategory,
+            projects,
+            path,
+            fetchData
+            } = useFetchData();
 
-    const {
-      currentPage,
-      totalPages,
-      pagedProjects,
-      availableYears,
-      selectedYear,
-      searchInput,
-      doSearch,
-    } = usePagination(projects);
+            const {
+            currentPage,
+            totalPages,
+            pagedProjects,
+            availableYears,
+            selectedYear,
+            searchInput,
+            doSearch,
+            } = usePagination(projects);
 
-    const changeTab = (tab) => {
-      if (currentCategory.value === tab) return;
-      isLoading.value = true;
-      currentCategory.value = tab;
-      currentPage.value = 1;
-      searchInput.value = '';
-      selectedYear.value = '';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      window.location.hash = `#${tab}`;
-    };
+            const changeTab = (tab) => {
+            if (currentCategory.value === tab) return;
+            isLoading.value = true;
+            currentCategory.value = tab;
+            currentPage.value = 1;
+            searchInput.value = '';
+            selectedYear.value = '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.location.hash = `#${tab}`;
+            };
 
-    //modal
-    const showModal = ref(false);        // 控制是否顯示 modal
-    const modalItem = ref(null);         // 儲存點擊的項目資料
-    const openModal = (item) => {
-    modalItem.value = item;
-    showModal.value = true;
-    };
-    const closeModal = () => {
-    showModal.value = false;
-    modalItem.value = null;
-    };
+            //modal
+            const showModal = ref(false);        // 控制是否顯示 modal
+            const modalItem = ref(null);         // 儲存點擊的項目資料
+            const openModal = (item) => {
+            modalItem.value = item;
+            showModal.value = true;
+            };
+            const closeModal = () => {
+            showModal.value = false;
+            modalItem.value = null;
+            };
 
 
-    // ✅ 監聽網址 hash，確保 tab 狀態一致
-    window.addEventListener('hashchange', () => {
-      const hash = decodeURIComponent(window.location.hash.replace('#', '')).toLowerCase();
-      const match = categories.value.find(name => name.toLowerCase() === hash);
-      if (match && match !== currentCategory.value) {
-        currentCategory.value = match;
-        console.log('🔁 hashchange → 切換 tab:', match);
-      }
-    });
+            // ✅ 監聽網址 hash，確保 tab 狀態一致
+            window.addEventListener('hashchange', () => {
+            const hash = decodeURIComponent(window.location.hash.replace('#', '')).toLowerCase();
+            const match = categories.value.find(name => name.toLowerCase() === hash);
+            if (match && match !== currentCategory.value) {
+                currentCategory.value = match;
+                console.log('🔁 hashchange → 切換 tab:', match);
+            }
+            });
 
-    // ✅ 當 categories 初次載入後，根據 hash 切換 tab
-    watch(categories, () => {
-      const hash = decodeURIComponent(window.location.hash.replace('#', '')).toLowerCase();
-      const match = categories.value.find(name => name.toLowerCase() === hash);
-      if (match) {
-        currentCategory.value = match;
-        console.log('📌 初次載入根據 hash 切換 tab:', match);
-      }
-    }, { immediate: true });
+            // ✅ 當 categories 初次載入後，根據 hash 切換 tab
+            watch(categories, () => {
+            const hash = decodeURIComponent(window.location.hash.replace('#', '')).toLowerCase();
+            const match = categories.value.find(name => name.toLowerCase() === hash);
+            if (match) {
+                currentCategory.value = match;
+                console.log('📌 初次載入根據 hash 切換 tab:', match);
+            }
+            }, { immediate: true });
 
-    onMounted(async () => {
-      isLoading.value = true;
-      await fetchData();     // 先抓 tabs
-      await nextTick();      // 等畫面更新
-      initJustfont();        // 套用字體
-      isLoading.value = false;
-    });
+            onMounted(async () => {
+            isLoading.value = true;
+            await fetchData();     // 先抓 tabs
+            await nextTick();      // 等畫面更新
+            initJustfont();        // 套用字體
+            isLoading.value = false;
+            });
 
-    // 當 currentCategory 改變時，自動載入資料並顯示 loading 畫面
-    watch(currentCategory, async () => {
-      isLoading.value = true;
-      await nextTick();
-      isLoading.value = false;
-    });
+            // 當 currentCategory 改變時，自動載入資料並顯示 loading 畫面
+            watch(currentCategory, async () => {
+            isLoading.value = true;
+            await nextTick();
+            isLoading.value = false;
+            });
 
-    return {
-      isLoading,
-      categories,
-      currentCategory,
-      projects,
-      path,
-      currentPage,
-      totalPages,
-      pagedProjects,
-      changeTab,
-      searchInput,
-      availableYears,
-      selectedYear,
-      doSearch,
-      showModal,
-      modalItem,
-      openModal,
-      closeModal,
-    };
-  }
-}).mount('#design');
-</script>
+            return {
+            isLoading,
+            categories,
+            currentCategory,
+            projects,
+            path,
+            currentPage,
+            totalPages,
+            pagedProjects,
+            changeTab,
+            searchInput,
+            availableYears,
+            selectedYear,
+            doSearch,
+            showModal,
+            modalItem,
+            openModal,
+            closeModal,
+            };
+        }
+        }).mount('#design');
+    </script>
 
 </html>
