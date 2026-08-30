@@ -678,7 +678,7 @@ header .content{
 	color: #6F6F6F;
 	word-break: break-all;
     overflow: hidden;
-    width: 19em;
+    width: 19.2em;
     height: 1.5em;
     border-right: 1px solid transparent;
     white-space:nowrap;
@@ -2249,7 +2249,7 @@ footer p{
 	}
 	.section_kv .sub_title{
 		letter-spacing: 0.06em;
-		width: 21em;
+		width: 19.5em;
 		opacity: 0;
 	}
 
